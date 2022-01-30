@@ -1,15 +1,25 @@
 const express = require('express')
 const router = express.Router();
-const {notes} = require('../../develop/db/db.json');
+const {notes} = require('../../develop/db/db');
 
 
 //note get route
 router.get('/notes', (req, res) => {
+    let note = notes;
+    if (req.query) {
+        note = filterByQuery(req.query, notes);
+    }
     res.json(notes);
 });
 
 router.get('/notes/:id', (req, res) => {
-    res.json(notes[req.params.id, notes]);
+    const note = findByID(req.params.id, notes);
+    if(note) {
+       res.json(notes);
+    } else {
+        res.send(404);
+    }
+    
 });
 
 //note post route
