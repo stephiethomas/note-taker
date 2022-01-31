@@ -1,15 +1,11 @@
-const express = require('express')
+const fs = require('fs');
 const router = express.Router();
-const {notes} = require('../../develop/db/db');
+const saveNote = fs.readFileSync(path.join(__dirname, "../db/db.json"));
 
 
 //note get route
 router.get('/notes', (req, res) => {
-    let note = notes;
-    if (req.query) {
-        note = filterByQuery(req.query, notes);
-    }
-    res.json(notes);
+    res.json(saveNote);
 });
 
 router.get('/notes/:id', (req, res) => {
@@ -24,14 +20,11 @@ router.get('/notes/:id', (req, res) => {
 
 //note post route
 router.post('/notes', (req, res) => {
-    req.body.id = notes.length.toString();
+    let pushNotes = req.body;
+    saveNote.push(pushNotes);
 
-    if (!validateNote(req.body)) {
-        res.status(400).send('Error');
-    } else {
-        const note = createNewNote(req.body, notes);
-        res.json(note);
-    }
+    fs.writeFileSync('/db/db.json', JSON.stringify(saveNote));
+    res.json(saveNote);
 });
 
 

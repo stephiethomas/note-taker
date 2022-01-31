@@ -2,11 +2,11 @@ const express = require('express');
 const app = express();
 const uniqid = require('uniqid');
 const fs = require('fs');
+
 const PORT = process.env.PORT || 3001;
 const path = require('path');
-const {notes} = require('./develop/db/db.json');
-const apiRoutes = require('./routes/apiRoutes');
-// const htmlRoutes = require('./Develop/public/notes.html');
+const apiRoutes = require('./routes/apiRoutes/htmlRoutes');
+const htmlRoutes = require('./routes/apiRoutes/htmlRoutes');
 
 
 //Express middleware
@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false}));
 app.use(express.json());
 app.use(express.static('public'));
 app.use('/api', apiRoutes);
-// app.use('/', htmlRoutes);
+app.use('/', htmlRoutes);
 
 
 
